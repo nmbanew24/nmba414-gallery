@@ -19,4 +19,4 @@ A neon-themed video gallery showcasing NMBA414's Facebook music videos. Features
 
 ## Visit the Site
 
-[View the Gallery](https://your-username.github.io/your-repo-name)
+[View the Gallery](https://nmbanew24.github.io/nmba414-gallery)

@@ -109,6 +109,134 @@ function loadFacebookVideos() {
     });
 }
 
+// Theme Management
+const themes = [
+    {
+        primary: 'rgb(66, 247, 21)',
+        secondary: 'rgb(15, 255, 7)',
+        accent: 'rgb(107, 0, 179)'
+    },
+    {
+        primary: '#0ff',
+        secondary: '#08f',
+        accent: '#f0f'
+    },
+    {
+        primary: '#ff3d00',
+        secondary: '#ff9100',
+        accent: '#ffea00'
+    }
+];
+
+let currentTheme = 0;
+
+function changeTheme() {
+    currentTheme = (currentTheme + 1) % themes.length;
+    const theme = themes[currentTheme];
+    
+    document.documentElement.style.setProperty('--neon-color', theme.primary);
+    document.documentElement.style.setProperty('--neon-border', theme.secondary);
+    document.documentElement.style.setProperty('--neon-hover', theme.accent);
+}
+
+// Loading Screen
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        document.querySelector('.loading-screen').classList.add('hidden');
+    }, 1500);
+});
+
+// Mobile Menu
+const menuBtn = document.querySelector('.mobile-menu-btn');
+const mobileNav = document.querySelector('.mobile-nav');
+
+menuBtn?.addEventListener('click', () => {
+    menuBtn.classList.toggle('active');
+    mobileNav.classList.toggle('active');
+});
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (!menuBtn?.contains(e.target) && !mobileNav?.contains(e.target)) {
+        menuBtn?.classList.remove('active');
+        mobileNav?.classList.remove('active');
+    }
+});
+
+// Video Filtering
+const filterBtns = document.querySelectorAll('.filter-btn');
+const videos = document.querySelectorAll('.video-container');
+
+filterBtns?.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Remove active class from all buttons
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+        
+        videos.forEach(video => {
+            if (filter === 'all') {
+                video.style.display = 'block';
+                setTimeout(() => video.style.opacity = '1', 10);
+            } else if (video.dataset.category === filter) {
+                video.style.display = 'block';
+                setTimeout(() => video.style.opacity = '1', 10);
+            } else {
+                video.style.opacity = '0';
+                setTimeout(() => video.style.display = 'none', 300);
+            }
+        });
+    });
+});
+
+// Video Modal
+const modal = document.querySelector('.video-modal');
+const modalClose = document.querySelector('.modal-close');
+const modalVideoContainer = document.querySelector('.modal-video-container');
+const modalTitle = document.querySelector('.modal-title');
+const modalDescription = document.querySelector('.modal-description');
+
+function openModal(videoUrl, title, description) {
+    modalVideoContainer.innerHTML = `<iframe src="${videoUrl}" frameborder="0" allowfullscreen></iframe>`;
+    modalTitle.textContent = title;
+    modalDescription.textContent = description;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    modal.classList.remove('active');
+    modalVideoContainer.innerHTML = '';
+    document.body.style.overflow = '';
+}
+
+modalClose?.addEventListener('click', closeModal);
+modal?.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+});
+
+// Theme Toggle
+const themeBtn = document.querySelector('.theme-btn');
+themeBtn?.addEventListener('click', changeTheme);
+
+// Smooth Scrolling
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            // Close mobile menu if open
+            menuBtn?.classList.remove('active');
+            mobileNav?.classList.remove('active');
+        }
+    });
+});
+
 // Initialize everything when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     addLoadingAnimation();
