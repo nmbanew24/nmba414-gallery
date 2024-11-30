@@ -229,6 +229,103 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Quick Navigation
+document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const target = btn.dataset.scroll;
+        const element = document.getElementById(target);
+        if (element) {
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// View Switching
+const viewBtns = document.querySelectorAll('.view-btn');
+const videoGrid = document.querySelector('.video-grid');
+
+viewBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const view = btn.dataset.view;
+        viewBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        if (view === 'list') {
+            videoGrid.style.gridTemplateColumns = '1fr';
+            videoGrid.style.maxWidth = '800px';
+            videoGrid.style.margin = '0 auto';
+            document.querySelectorAll('.video-container').forEach(container => {
+                container.style.maxWidth = '100%';
+                container.style.display = 'flex';
+                container.style.gap = '1rem';
+                container.style.alignItems = 'center';
+            });
+        } else {
+            videoGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(250px, 1fr))';
+            videoGrid.style.maxWidth = 'none';
+            videoGrid.style.margin = '0';
+            document.querySelectorAll('.video-container').forEach(container => {
+                container.style.maxWidth = '250px';
+                container.style.display = 'block';
+            });
+        }
+    });
+});
+
+// Intersection Observer for fade-in animations
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('fade-in');
+            observer.unobserve(entry.target);
+        }
+    });
+}, {
+    threshold: 0.1
+});
+
+document.querySelectorAll('.video-container').forEach(container => {
+    observer.observe(container);
+});
+
+// Theme color cycling
+let currentThemeIndex = 0;
+const themes = [
+    { primary: 'rgb(66, 247, 21)', secondary: 'rgb(15, 255, 7)', accent: 'rgb(107, 0, 179)' },
+    { primary: '#0ff', secondary: '#08f', accent: '#f0f' },
+    { primary: '#ff3d00', secondary: '#ff9100', accent: '#ffea00' }
+];
+
+function cycleTheme() {
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    const theme = themes[currentThemeIndex];
+    document.documentElement.style.setProperty('--neon-text', theme.primary);
+    document.documentElement.style.setProperty('--neon-border', theme.secondary);
+    document.documentElement.style.setProperty('--neon-glow', theme.accent);
+}
+
+// Auto cycle theme every 30 seconds
+setInterval(cycleTheme, 30000);
+
+// Mouse trail effect
+const trail = document.createElement('div');
+trail.className = 'mouse-trail';
+document.body.appendChild(trail);
+
+let mouseX = 0;
+let mouseY = 0;
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    
+    trail.style.left = mouseX + 'px';
+    trail.style.top = mouseY + 'px';
+});
+
 // Initialize everything when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     addLoadingAnimation();
