@@ -6,7 +6,26 @@ window.fbAsyncInit = function() {
         xfbml: true,
         version: 'v12.0'
     });
+
+    // Parse Facebook videos after SDK is loaded
+    FB.XFBML.parse();
 };
+
+// Load Facebook SDK
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+// Refresh Facebook embeds when needed
+function refreshFacebookEmbeds() {
+    if (window.FB) {
+        FB.XFBML.parse();
+    }
+}
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -163,33 +182,6 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Video Filtering
-const filterBtns = document.querySelectorAll('.filter-btn');
-const videos = document.querySelectorAll('.video-container');
-
-filterBtns?.forEach(btn => {
-    btn.addEventListener('click', () => {
-        // Remove active class from all buttons
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const filter = btn.dataset.filter;
-        
-        videos.forEach(video => {
-            if (filter === 'all') {
-                video.style.display = 'block';
-                setTimeout(() => video.style.opacity = '1', 10);
-            } else if (video.dataset.category === filter) {
-                video.style.display = 'block';
-                setTimeout(() => video.style.opacity = '1', 10);
-            } else {
-                video.style.opacity = '0';
-                setTimeout(() => video.style.display = 'none', 300);
-            }
-        });
-    });
-});
-
 // Video Modal
 const modal = document.querySelector('.video-modal');
 const modalClose = document.querySelector('.modal-close');
@@ -241,4 +233,21 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 document.addEventListener('DOMContentLoaded', () => {
     addLoadingAnimation();
     loadFacebookVideos();
+
+    // Add loading animation for videos
+    const videoContainers = document.querySelectorAll('.video-container');
+    videoContainers.forEach(container => {
+        container.style.opacity = '0';
+        container.style.transform = 'translateY(20px)';
+    });
+
+    // Fade in videos with delay
+    setTimeout(() => {
+        videoContainers.forEach((container, index) => {
+            setTimeout(() => {
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    }, 500);
 });

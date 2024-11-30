@@ -98,8 +98,8 @@ body {
 /* Video Grid */
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
     padding: 20px;
     justify-items: center;
     margin-bottom: 40px;
@@ -111,8 +111,8 @@ body {
 .video-container {
     position: relative;
     width: 100%;
-    max-width: 300px;
-    min-height: 250px;
+    max-width: 250px;
+    min-height: 200px;
     border: 2px solid var(--neon-border);
     border-radius: 15px;
     overflow: hidden;
@@ -146,6 +146,60 @@ body {
 .video-container:hover::after {
     opacity: 0.6;
     filter: blur(15px);
+}
+
+.fb-video {
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+    background: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fb-video iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+    border: none;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+    .video-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .video-container {
+        max-width: 200px;
+        min-height: 180px;
+    }
+
+    .fb-video,
+    .fb-video iframe {
+        min-height: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .video-container {
+        max-width: 150px;
+        min-height: 150px;
+    }
+
+    .fb-video,
+    .fb-video iframe {
+        min-height: 150px;
+    }
 }
 
 /* Video Overlay */
@@ -204,24 +258,6 @@ body {
     background: var(--neon-color);
     box-shadow: var(--shadow-neon);
     transform: translateY(-2px) scale(1.05);
-}
-
-/* FB Video Container */
-.fb-video {
-    width: 100%;
-    height: 100%;
-    min-height: 250px;
-    background: var(--background);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.fb-video iframe {
-    width: 100%;
-    height: 100%;
-    min-height: 250px;
-    border: none;
 }
 
 /* Thumbnail Strip */
