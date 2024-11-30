@@ -15,7 +15,8 @@ window.fbAsyncInit = function() {
 (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
+    js = d.createElement(s);
+    js.id = id;
     js.src = "https://connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
@@ -101,7 +102,7 @@ document.head.appendChild(style);
 // Load Facebook videos
 function loadFacebookVideos() {
     const videoContainer = document.getElementById('videoContainer');
-    
+
     // Add your Facebook video URLs here
     const videoUrls = [
         'https://www.facebook.com/NMBA414/videos/2245173122534355/',
@@ -117,20 +118,19 @@ function loadFacebookVideos() {
     videoUrls.forEach(url => {
         const videoWrapper = document.createElement('div');
         videoWrapper.className = 'video-container';
-        
+
         const iframe = document.createElement('iframe');
         iframe.src = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false`;
         iframe.setAttribute('allowfullscreen', 'true');
         iframe.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; picture-in-picture');
-        
+
         videoWrapper.appendChild(iframe);
         videoContainer.appendChild(videoWrapper);
     });
 }
 
 // Theme Management
-const themes = [
-    {
+const themes = [{
         primary: 'rgb(66, 247, 21)',
         secondary: 'rgb(15, 255, 7)',
         accent: 'rgb(107, 0, 179)'
@@ -152,7 +152,7 @@ let currentTheme = 0;
 function changeTheme() {
     currentTheme = (currentTheme + 1) % themes.length;
     const theme = themes[currentTheme];
-    
+
     document.documentElement.style.setProperty('--neon-color', theme.primary);
     document.documentElement.style.setProperty('--neon-border', theme.secondary);
     document.documentElement.style.setProperty('--neon-hover', theme.accent);
@@ -169,16 +169,16 @@ window.addEventListener('load', () => {
 const menuBtn = document.querySelector('.mobile-menu-btn');
 const mobileNav = document.querySelector('.mobile-nav');
 
-menuBtn?.addEventListener('click', () => {
+menuBtn ? .addEventListener('click', () => {
     menuBtn.classList.toggle('active');
     mobileNav.classList.toggle('active');
 });
 
 // Close mobile menu when clicking outside
 document.addEventListener('click', (e) => {
-    if (!menuBtn?.contains(e.target) && !mobileNav?.contains(e.target)) {
-        menuBtn?.classList.remove('active');
-        mobileNav?.classList.remove('active');
+    if (!menuBtn ? .contains(e.target) && !mobileNav ? .contains(e.target)) {
+        menuBtn ? .classList.remove('active');
+        mobileNav ? .classList.remove('active');
     }
 });
 
@@ -203,18 +203,18 @@ function closeModal() {
     document.body.style.overflow = '';
 }
 
-modalClose?.addEventListener('click', closeModal);
-modal?.addEventListener('click', (e) => {
+modalClose ? .addEventListener('click', closeModal);
+modal ? .addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
 });
 
 // Theme Toggle
 const themeBtn = document.querySelector('.theme-btn');
-themeBtn?.addEventListener('click', changeTheme);
+themeBtn ? .addEventListener('click', changeTheme);
 
 // Smooth Scrolling
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+    anchor.addEventListener('click', function(e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
@@ -223,8 +223,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 block: 'start'
             });
             // Close mobile menu if open
-            menuBtn?.classList.remove('active');
-            mobileNav?.classList.remove('active');
+            menuBtn ? .classList.remove('active');
+            mobileNav ? .classList.remove('active');
         }
     });
 });
@@ -252,10 +252,10 @@ viewBtns.forEach(btn => {
         const view = btn.dataset.view;
         viewBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        
+
         if (view === 'list') {
             videoGrid.style.gridTemplateColumns = '1fr';
-            videoGrid.style.maxWidth = '800px';
+            #09ff00eoGrid.style.maxWidth = '800px';
             videoGrid.style.margin = '0 auto';
             document.querySelectorAll('.video-container').forEach(container => {
                 container.style.maxWidth = '100%';
@@ -293,10 +293,21 @@ document.querySelectorAll('.video-container').forEach(container => {
 
 // Theme color cycling
 let currentThemeIndex = 0;
-const themes = [
-    { primary: 'rgb(66, 247, 21)', secondary: 'rgb(15, 255, 7)', accent: 'rgb(107, 0, 179)' },
-    { primary: '#0ff', secondary: '#08f', accent: '#f0f' },
-    { primary: '#ff3d00', secondary: '#ff9100', accent: '#ffea00' }
+const themes = [{
+        primary: 'rgb(66, 247, 21)',
+        secondary: 'rgb(15, 255, 7)',
+        accent: 'rgb(107, 0, 179)'
+    },
+    {
+        primary: '#0ff',
+        secondary: '#08f',
+        accent: '#f0f'
+    },
+    {
+        primary: '#ff3d00',
+        secondary: '#ff9100',
+        accent: '#ffea00'
+    }
 ];
 
 function cycleTheme() {
@@ -321,13 +332,158 @@ let mouseY = 0;
 document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    
+
     trail.style.left = mouseX + 'px';
     trail.style.top = mouseY + 'px';
 });
 
-// Initialize everything when the page loads
-document.addEventListener('DOMContentLoaded', () => {
+// Interactive Background
+const bgCanvas = document.getElementById('bgCanvas');
+const bgCtx = bgCanvas.getContext('2d');
+const particles = [];
+
+function initBackground() {
+    bgCanvas.width = window.innerWidth;
+    bgCanvas.height = window.innerHeight;
+
+    for (let i = 0; i < 50; i++) {
+        particles.push({
+            x: Math.random() * bgCanvas.width,
+            y: Math.random() * bgCanvas.height,
+            size: Math.random() * 3 + 1,
+            speedX: Math.random() * 2 - 1,
+            speedY: Math.random() * 2 - 1,
+            color: getComputedStyle(document.documentElement).getPropertyValue('--neon-glow')
+        });
+    }
+}
+
+function animateBackground() {
+    bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+    
+    particles.forEach(particle => {
+        particle.x += particle.speedX;
+        particle.y += particle.speedY;
+        
+        if (particle.x < 0 || particle.x > bgCanvas.width) particle.speedX *= -1;
+        if (particle.y < 0 || particle.y > bgCanvas.height) particle.speedY *= -1;
+        
+        bgCtx.beginPath();
+        bgCtx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        bgCtx.fillStyle = particle.color;
+        bgCtx.fill();
+    });
+    
+    requestAnimationFrame(animateBackground);
+}
+
+// Music Visualizer
+const visualizer = document.getElementById('visualizer');
+const visualizerCtx = visualizer.getContext('2d');
+let audioContext;
+let analyser;
+let dataArray;
+let isPlaying = false;
+
+function initVisualizer() {
+    visualizer.width = 200;
+    visualizer.height = 40;
+    
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 128;
+    
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+}
+
+function drawVisualizer() {
+    const barWidth = visualizer.width / analyser.frequencyBinCount;
+    const barGap = 2;
+    
+    visualizerCtx.clearRect(0, 0, visualizer.width, visualizer.height);
+    
+    analyser.getByteFrequencyData(dataArray);
+    
+    dataArray.forEach((value, index) => {
+        const barHeight = (value / 255) * visualizer.height;
+        const x = index * (barWidth + barGap);
+        const y = visualizer.height - barHeight;
+        
+        const gradient = visualizerCtx.createLinearGradient(0, y, 0, visualizer.height);
+        gradient.addColorStop(0, getComputedStyle(document.documentElement).getPropertyValue('--neon-text'));
+        gradient.addColorStop(1, getComputedStyle(document.documentElement).getPropertyValue('--neon-glow'));
+        
+        visualizerCtx.fillStyle = gradient;
+        visualizerCtx.fillRect(x, y, barWidth, barHeight);
+    });
+    
+    requestAnimationFrame(drawVisualizer);
+}
+
+// Preview Functionality
+const previewModal = document.querySelector('.preview-modal');
+const previewVideo = document.querySelector('.preview-video');
+const previewTitle = document.querySelector('.preview-title');
+const previewDescription = document.querySelector('.preview-description');
+
+document.querySelectorAll('.video-container').forEach(container => {
+    container.addEventListener('mouseenter', e => {
+        const rect = container.getBoundingClientRect();
+        container.style.setProperty('--mouse-x', e.clientX - rect.left + 'px');
+        container.style.setProperty('--mouse-y', e.clientY - rect.top + 'px');
+    });
+    
+    container.addEventListener('mousemove', e => {
+        const rect = container.getBoundingClientRect();
+        container.style.setProperty('--mouse-x', e.clientX - rect.left + 'px');
+        container.style.setProperty('--mouse-y', e.clientY - rect.top + 'px');
+    });
+    
+    container.addEventListener('click', () => {
+        const videoUrl = container.querySelector('.fb-video').dataset.href;
+        const title = container.querySelector('.video-title').textContent;
+        
+        previewVideo.innerHTML = `
+            <div class="fb-video" 
+                 data-href="${videoUrl}"
+                 data-width="auto"
+                 data-show-text="false">
+            </div>`;
+        
+        previewTitle.textContent = title;
+        previewDescription.textContent = 'Experience the rhythm and energy of NMBA414 in this captivating performance.';
+        
+        previewModal.style.display = 'flex';
+        FB.XFBML.parse(previewVideo);
+    });
+});
+
+document.querySelector('.preview-close').addEventListener('click', () => {
+    previewModal.style.display = 'none';
+    previewVideo.innerHTML = '';
+});
+
+// Floating Controls
+document.querySelector('.theme-btn').addEventListener('click', cycleTheme);
+
+document.querySelector('.effect-btn').addEventListener('click', () => {
+    document.body.classList.toggle('effects-disabled');
+});
+
+document.querySelector('.fullscreen-btn').addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
+});
+
+// Initialize Everything
+window.addEventListener('load', () => {
+    initBackground();
+    animateBackground();
+    initVisualizer();
+    drawVisualizer();
     addLoadingAnimation();
     loadFacebookVideos();
 
@@ -347,4 +503,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }, index * 100);
         });
     }, 500);
+});
+
+window.addEventListener('resize', () => {
+    initBackground();
 });
